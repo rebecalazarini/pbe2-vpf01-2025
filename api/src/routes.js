@@ -4,6 +4,7 @@ const routes = express.Router();
 const Cliente = require('./controllers/cliente');
 const Pizza = require('./controllers/pizza');
 const Pedido = require('./controllers/pedido');
+const Item = require('./controllers/item');
 
 routes.get('/', (req, res) => {
   return res.json({ titulo: 'Pizzaria Ginno e Silva' });
@@ -26,5 +27,11 @@ routes.get('/pedidos', Pedido.read);
 routes.get('/pedidos/:id', Pedido.readOne);
 routes.patch('/pedidos/:id', Pedido.update);
 routes.delete('/pedidos/:id', Pedido.remove);
+
+routes.post('/itens', Item.create);
+routes.get('/itens', Item.read);
+routes.get('/itens/:id', Item.readOne);
+routes.patch('/itens/:id', Item.update);
+routes.delete('/itens/:id', Item.remove);
 
 module.exports = routes;

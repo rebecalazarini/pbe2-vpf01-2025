@@ -24,7 +24,14 @@ const readOne = async (req, res) => {
                 id: true,
                 data: true,
                 cliente: true,
-                valor: true
+                valor: true,
+                itens: {
+                    select:{
+                        pizza: true,
+                        quantidade: true,
+                        subtotal: true
+                    }
+                }
             },
             where: {
                 id: Number(req.params.id)

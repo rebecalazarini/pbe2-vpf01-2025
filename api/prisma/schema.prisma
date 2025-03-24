@@ -42,5 +42,5 @@ model Item {
   pedido     Pedido   @relation(fields: [pedidoId], references: [id])
   pizza      Pizza    @relation(fields: [pizzaId], references: [id])
   quantidade Int
-  subtotal   Decimal? @db.Decimal(10, 2)
+  subTotal   Decimal? @db.Decimal(10, 2)
 }
