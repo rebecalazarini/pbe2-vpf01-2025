@@ -29,7 +29,7 @@ const readOne = async (req, res) => {
                     select:{
                         pizza: true,
                         quantidade: true,
-                        subtotal: true
+                        subTotal: true
                     }
                 }
             },
