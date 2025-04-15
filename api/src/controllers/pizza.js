@@ -6,62 +6,47 @@ const create = async (req, res) => {
         const pizza = await prisma.pizza.create({
             data: req.body
         });
-        return res.status(201).json(pizza);
-    } catch (error) {
-        return res.status(400).json({ error: error.message });
+        res.status(201).json(pizza).end();
+    } catch (e) {
+        res.status(400).json(e).end();
     }
 }
 
 const read = async (req, res) => {
     const pizzas = await prisma.pizza.findMany();
-    return res.json(pizzas);
-}
-
-const readOne = async (req, res) => {
-    try {
-        const pizza = await prisma.pizza.findUnique({
-            select: {
-                id: true,
-                nome: true,
-                descricao: true,
-                valor: true,
-                itens: true
-            },
-            where: {
-                id: Number(req.params.id)
-            }
-        });
-        return res.json(pizza);
-    } catch (error) {
-        return res.status(400).json({ error: error.message });
-    }
+    res.json(pizzas);
 }
 
 const update = async (req, res) => {
     try {
         const pizza = await prisma.pizza.update({
+            data: req.body,
             where: {
-                id: Number(req.params.id)
-            },
-            data: req.body
+                pizza_id: Number(req.params.id)
+            }
         });
-        return res.status(202).json(pizza);
-    } catch (error) {
-        return res.status(400).json({ error: error.message });
+        res.status(202).json(pizza).end();
+    } catch (e) {
+        res.status(400).json(e).end();
     }
 }
 
 const remove = async (req, res) => {
     try {
-        await prisma.pizza.delete({
+        const pizza = await prisma.pizza.delete({
             where: {
-                id: Number(req.params.id)
+                pizza_id: Number(req.params.id)
             }
         });
-        return res.status(204).send();
-    } catch (error) {
-        return res.status(404).json({ error: error.message });
+        res.status(204).json(pizza).end();
+    } catch (e) {
+        res.status(400).json(e).end();
     }
 }
 
-module.exports = { create, read, readOne, update, remove };
+module.exports = {
+    create,
+    read,
+    update,
+    remove
+}

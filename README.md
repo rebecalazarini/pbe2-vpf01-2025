@@ -1,39 +1,46 @@
-# Pizzaria Pizzaria Ginno e Silva
-Exemplo de projeto Back-end com Node.js, Prisma e XAMPP para registro e controle de pedidos de uma pizzaria.
+# API - Pizzaria Gino e Silva
+Avaliação - Verificação Prática Formativa de Back-End
 
-## Contextualização
-Contextualização:
-A pizzaria Pizzaria Ginno e Silva deseja um sistema para gerenciar seus pedidos para delivery. Você faz parte de uma equipe de desenvolvimento e atua como programador back-end. O P.O. da equipe elaborou o DER abaixo para o banco de dados do sistema.
-![DER](./docs/der.png)
+## Requisitos funcionais
+- [RF001] O sistema deve permitir o CRUD de pizzas.
+- [RF002] O sistema deve permitir o CRUD de clientes.
+- [RF003] O sistema deve permitir o CRUD de pedidos.
+- [RF003.1] O sistema deve associar o pedido a um cliente.
+- [RF003.2] O sistema deve permitir a inclusão de pizzas no pedido (ítens do pedido).
 
-## Tecnologias
-- Node.js
-- Prisma
-- XAMPP
-- MySQL
-- VsCode
-- Insomnia
+## MER DER
+![MER DER](./docs/der-pizzaria-fk.png)
 
-## Como testar
-- 1 Clone este **repositório**
-- 2 Abra o **XAMPP** Control Panel e inicie o Apache e o MySQL
-- 3 Abra com o repositorio com **VsCode**
-- 4 Crie o arquivo .env na pasta API e adicione as seguintes variáveis de ambiente
+## tecnologias
+- Node.js (Framework)
+- VsCode (IDE)
+- Insomnia (IDE de testes)
+- Prisma (ORM)
+- XAMPP (IDE) SGBD MySQL
+
+## Passo a passo para testar
+- 1 Clone este repositório
+- 2 Abrir com Vscode
+- 3 Criar o arquivo **.env** na pasta API contendo:
 ```js
 DATABASE_URL="mysql://root@localhost:3306/pizzaria?schema=public&timezone=UTC"
 ```
-- 5 Abra o terminal **CTRL + '** cmd ou bash, navegue até a pasta API e execute os comandos
-````bash
+- Obs: certifique-se de não ter um banco de dados chamado **pizzaria** no seu MySQL.
+- 4 Abrir o XAMPP e dar start em MySQL
+- 5 No VsCode abra um terminal **CTRL + '** cmd ou bash e digite os seguintes comandos para baixar as dependências e instalar o Banco de dados
+```bash
 cd api
 npm install
+npm i prisma -g
 npx prisma migrate dev --name init
 npx nodemon
 # ou
 npm start
-````
-- 6 Abra o **Insomnia** e importe o arquivo **./docs/insomnia.json** para testar as rotas.
-- 7 Caso queira visualizar o banco de dados, abra o **XAMPP** Control Panel e clique em **Admin** no módulo MySQL.
-    - O arquivo ./docs/testes.sql é um script com dados de teste para inserir no banco de dados.
-- 8 Para parar a execução do servidor, pressione **CTRL + C** no terminal.
+```
+- 6 Abra o Insomnia e importe o arquivo **./docs/insomnia.yaml** para realizar os testes.
 
-## OBs
+## Prints dos testes
+![Print01](./docs/prints/10pizzas.png)
+![Print02](./docs/prints/5clientes.png)
+![Print03](./docs/prints/5pedidos.png)
+![Print04](./docs/prints/readone.png)

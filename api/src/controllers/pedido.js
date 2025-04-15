@@ -6,68 +6,65 @@ const create = async (req, res) => {
         const pedido = await prisma.pedido.create({
             data: req.body
         });
-        return res.status(201).json(pedido);
-    } catch (error) {
-        return res.status(400).json({ error: error.message });
+        res.status(201).json(pedido).end();
+    } catch (e) {
+        res.status(400).json(e).end();
     }
 }
 
 const read = async (req, res) => {
     const pedidos = await prisma.pedido.findMany();
-    return res.json(pedidos);
+    res.json(pedidos);
 }
 
 const readOne = async (req, res) => {
-    try {
-        const pedido = await prisma.pedido.findUnique({
-            select: {
-                id: true,
-                data: true,
-                cliente: true,
-                valor: true,
-                itens: {
-                    select:{
-                        pizza: true,
-                        quantidade: true,
-                        subTotal: true
-                    }
+    const pedidos = await prisma.pedido.findMany({
+        where: {
+            pedido_id: Number(req.params.id)
+        },
+        include: {
+            cliente: true,
+            itens: {
+                include: {
+                    pizza: true
                 }
-            },
-            where: {
-                id: Number(req.params.id)
             }
-        });
-        return res.json(pedido);
-    } catch (error) {
-        return res.status(400).json({ error: error.message });
-    }
+        }
+    });
+    res.json(pedidos);
 }
 
 const update = async (req, res) => {
     try {
         const pedido = await prisma.pedido.update({
+            data: req.body,
             where: {
-                id: Number(req.params.id)
-            },
-            data: req.body
+                pedido_id: Number(req.params.id)
+            }
         });
-        return res.status(202).json(pedido);
-    } catch (error) {
-        return res.status(400).json({ error: error.message });
+        res.status(202).json(pedido).end();
+    } catch (e) {
+        res.status(400).json(e).end();
     }
 }
 
 const remove = async (req, res) => {
     try {
-        await prisma.pedido.delete({
+        const pedido = await prisma.pedido.delete({
             where: {
-                id: Number(req.params.id)
+                pedido_id: Number(req.params.id)
             }
         });
-        return res.status(204).send();
-    } catch (error) {
-        return res.status(404).json({ error: error.message });
+        res.status(204).json(pedido).end();
+    } catch (e) {
+        res.status(400).json(e).end();
     }
 }
 
-module.exports = { create, read, readOne, update, remove };
+module.exports = {
+    create,
+    read,
+    readOne,
+    update,
+    remove
+}

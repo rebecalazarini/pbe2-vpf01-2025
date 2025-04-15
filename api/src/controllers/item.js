@@ -2,70 +2,52 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 const create = async (req, res) => {
+    req.body.sub_total = req.body.valor * req.body.quantidade;
     try {
         const item = await prisma.item.create({
             data: req.body
         });
-        return res.status(201).json(item);
-    } catch (error) {
-        return res.status(400).json({ error: error.message });
+        res.status(201).json(item).end();
+    } catch (e) {
+        res.status(400).json(e).end();
     }
 }
 
 const read = async (req, res) => {
     const itens = await prisma.item.findMany();
-    return res.json(itens);
-}
-
-const readOne = async (req, res) => {
-    try {
-        const item = await prisma.item.findUnique({
-            where: {
-                id: Number(req.params.id)
-            },
-            include: {
-                pedido: {
-                    select: {
-                        id: true,
-                        data: true,
-                        cliente: true,
-                        valor: true
-                    }
-                },
-                pizza: true,
-            }
-        });
-        return res.json(item);
-    } catch (error) {
-        return res.status(400).json({ error: error.message });
-    }
+    res.json(itens);
 }
 
 const update = async (req, res) => {
     try {
         const item = await prisma.item.update({
+            data: req.body,
             where: {
-                id: Number(req.params.id)
-            },
-            data: req.body
+                item_id: Number(req.params.id)
+            }
         });
-        return res.status(202).json(item);
-    } catch (error) {
-        return res.status(400).json({ error: error.message });
+        res.status(202).json(item).end();
+    } catch (e) {
+        res.status(400).json(e).end();
     }
 }
 
 const remove = async (req, res) => {
     try {
-        await prisma.item.delete({
+        const item = await prisma.item.delete({
             where: {
-                id: Number(req.params.id)
+                item_id: Number(req.params.id)
             }
         });
-        return res.status(204).send();
-    } catch (error) {
-        return res.status(404).json({ error: error.message });
+        res.status(204).json(item).end();
+    } catch (e) {
+        res.status(400).json(e).end();
     }
 }
 
-module.exports = { create, read, readOne, update, remove };
+module.exports = {
+    create,
+    read,
+    update,
+    remove
+}
